@@ -2,8 +2,8 @@
       <div class="main-menu-content">
 
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-          <li class=" nav-item"><a href=""><i class="icon-home"></i><span class="menu-title" data-i18n="nav.dash.main">Dashboard</span></a></li>    
-          <li class=" nav-item"><a href=""><i class="icon-home"></i><span class="menu-title" data-i18n="nav.dash.main">Inquiry</span></a></li>    
+          <li class=" nav-item"><a href="{{route('dashboard')}}"><i class="icon-home"></i><span class="menu-title" data-i18n="nav.dash.main">Dashboard</span></a></li>    
+          <li class=" nav-item"><a href="{{route('company')}}"><i class="icon-home"></i><span class="menu-title" data-i18n="nav.dash.main">Inquiry</span></a></li>    
           <li class=" nav-item"><a href=""><i class="icon-user"></i><span class="menu-title" data-i18n="nav.dash.main">User</span></a></li>
         
           <li class=" navigation-header"><span data-i18n="nav.category.support">Settings</span><i class="ft-more-horizontal ft-minus" data-toggle="tooltip" data-placement="right" data-original-title="Settings"></i></li>

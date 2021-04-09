@@ -44,20 +44,25 @@
                     <h6 class="card-subtitle line-on-side text-muted text-center font-small-3 pt-2"><span>Login</span></h6>
                 </div>
                 <div class="card-content">
-                    <div class="card-body">
-                        <form class="form-horizontal form-simple" action="" novalidate>
+                    <div class="card-body">                    
+                        <form class="form-horizontal form-simple" action="{{ route('login') }}" method="post" novalidate>
+                        @csrf
                             <fieldset class="form-group position-relative has-icon-left mb-0">
-                                <input type="text" class="form-control form-control-lg input-lg" id="user-name" placeholder="Username" required>
+                                <input type="text" name="username" class="form-control form-control-lg input-lg" id="user-name" placeholder="Username" required>
+                                @if($errors->has('username'))<p class="badge-default badge-danger block-tag text-left"><small class="block-area white">{{$errors->first('username')}}</small></p>@endif
                                 <div class="form-control-position">
                                     <i class="ft-user"></i>
                                 </div>
                             </fieldset>
+                            <p></p>
                             <fieldset class="form-group position-relative has-icon-left">
-                                <input type="password" class="form-control form-control-lg input-lg" id="user-password" placeholder="Password" required>
+                                <input type="password" name="password" class="form-control form-control-lg input-lg" id="user-password" placeholder="Password" required>
+                                @if($errors->has('password'))<p class="badge-default badge-danger block-tag text-left"><small class="block-area white">{{$errors->first('password')}}</small></p>@endif
                                 <div class="form-control-position">
                                     <i class="fa fa-key"></i>
                                 </div>
-                            </fieldset>                            
+                            </fieldset>                          
+                            <p>{{$msg??''}}</p>        
                             <button type="submit" class="btn btn-info btn-lg btn-block"><i class="ft-unlock"></i> Login</button>
                         </form>
                     </div>
@@ -73,18 +78,15 @@
     <!-- ////////////////////////////////////////////////////////////////////////////-->
 
     <!-- BEGIN VENDOR JS-->
-    <script src="{{asset("app-assets/vendors/js/vendors.min.js")}}"></script>
-    <!-- BEGIN VENDOR JS-->
-    <!-- BEGIN PAGE VENDOR JS-->    
-    <script src="{{asset("app-assets/vendors/js/forms/validation/jqBootstrapValidation.js")}}"></script>
-    <!-- END PAGE VENDOR JS-->
+    <script src="{{asset("app-assets/vendors/js/vendors.min.js")}}"></script>   
+ 
     <!-- BEGIN ROBUST JS-->
     <script src="{{asset("app-assets/js/core/app-menu.min.js")}}"></script>
     <script src="{{asset("app-assets/js/core/app.min.js")}}"></script>
     <!-- END ROBUST JS-->
     <!-- BEGIN PAGE LEVEL JS-->
     <script src="{{asset("app-assets/js/scripts/forms/form-login-register.min.js")}}"></script>
-    <!-- END PAGE LEVEL JS-->
+    <!-- END PAGE LEVEL JS-->        
   </body>
 
 </html>

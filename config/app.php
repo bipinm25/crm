@@ -178,6 +178,7 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
 
     ],
 
@@ -234,6 +235,7 @@ return [
 
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
 
     ],
 
