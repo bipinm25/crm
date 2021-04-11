@@ -46,6 +46,8 @@
                                 <tr>
                                     <th>Id</th>
                                     <th>Name</th>
+                                    <th>Status</th>
+                                    <th>Sub Status</th>
                                     <th>mobile</th>
                                     <th>email</th>                                    
                                     <th>Action</th>
@@ -58,26 +60,28 @@
             </div>
         </div>
     </div>
-</section>
-
 @endsection
 
 @section('javascript')
 <script>
     $(document).ready(function(){
         var company_list =  $(".company-list").DataTable({
+            "pageLength": 20,
             "bLengthChange": false,
             searching: false,
             processing: true,
             serverSide: true,
             ajax: "{{ route('listcompany') }}",
             columns: [
-                {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                {data: 'id', name: 'id'},
                 {data: 'name', name: 'name'},
+                {data: 'status_id','name':'status_id'},
+                {data: 'sub_status_id','name':'sub_status_id'},
                 {data: 'mobile', name: 'mobile'},
                 {data: 'email', name: 'email'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
-            ]
+            ],
+            'order': [[0, "desc" ]],
         });   
     });
 </script>

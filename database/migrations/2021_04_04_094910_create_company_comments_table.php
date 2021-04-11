@@ -16,13 +16,13 @@ class CreateCompanyCommentsTable extends Migration
         Schema::create('company_comments', function (Blueprint $table) {
             $table->engine = 'InnoDB';            
             $table->id();
-            $table->integer('compnay_id');
+            $table->integer('company_id');
             $table->integer('parent_id')->default(0);
             $table->text('comment');
             $table->timestamps();
-            $table->string('created_by');
-            $table->string('updated_by');
-            $table->string('deleted_by');
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
             $table->softDeletes();
         });
     }

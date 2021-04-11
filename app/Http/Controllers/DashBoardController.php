@@ -8,7 +8,7 @@ class DashBoardController extends Controller
 {
     public function index(){
        //\Auth::user()->getFullName()
-        return view('dashboard.index');
+       return view('dashboard.index');
     }
 
     public function sample(){

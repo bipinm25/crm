@@ -8,6 +8,7 @@
     <meta name="description" content="Robust admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template.">
     <meta name="keywords" content="admin template, robust admin template, dashboard template, flat admin template, responsive admin template, web app, crypto dashboard, bitcoin dashboard">
     <meta name="author" content="PIXINVENT">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>CRM</title>
     <link rel="apple-touch-icon" href="{{asset("app-assets/images/ico/apple-icon-120.png")}}">
     <link rel="shortcut icon" type="image/x-icon" href="https://pixinvent.com/bootstrap-admin-template/robust/app-assets/images/ico/favicon.ico">
@@ -20,6 +21,8 @@
     <link rel="stylesheet" type="text/css" href="{{asset("app-assets/vendors/css/extensions/unslider.css")}}">
     <link rel="stylesheet" type="text/css" href="{{asset("app-assets/vendors/css/weather-icons/climacons.min.css")}}">
     <!-- END VENDOR CSS-->
+    <link rel="stylesheet" type="text/css" href="{{asset("app-assets/vendors/css/forms/icheck/icheck.css")}}">
+    <link rel="stylesheet" type="text/css" href="{{asset("app-assets/vendors/css/forms/icheck/custom.css")}}">
     <!-- BEGIN ROBUST CSS-->
     <link rel="stylesheet" type="text/css" href="{{asset("app-assets/css/app.min.css")}}">
     <!-- END ROBUST CSS-->
@@ -68,8 +71,15 @@
     <script src="{{ asset("app-assets/js/core/app-menu.min.js")}}"></script>
     <script src="{{ asset("app-assets/js/core/app.min.js")}}"></script>
     <script src="{{ asset("app-assets/js/scripts/customizer.min.js")}}"></script>
+    <script src="{{ asset("app-assets/vendors/js/forms/icheck/icheck.min.js")}}"></script>
     <!-- END ROBUST JS-->    
+    <script>
+      $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+    </script>
     @yield('javascript')
-
   </body>
 </html>

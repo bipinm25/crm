@@ -17,7 +17,7 @@ class CreateStaffTable extends Migration
             $table->engine = 'InnoDB';            
             $table->id();
             $table->integer('company_id')->default(0)->nullable()->comment('0 - internal staff');
-            $table->integer('staff_type')->default(1)->nullable()->comment('1-internal staff, 2-other compnay staff');
+            $table->integer('staff_type')->default(1)->nullable()->comment('1-internal staff, 2-other company staff');
             $table->string('first_name', 255)->nullable();
             $table->string('last_name', 255)->nullable();
             $table->enum('gender', ['male','female','other'])->nullable();
@@ -28,9 +28,9 @@ class CreateStaffTable extends Migration
             $table->text('permanent_address')->nullable();
             $table->boolean('status')->default(1)->comment('1-active, 0-Inactive');            
             $table->timestamps();
-            $table->string('created_by');
-            $table->string('updated_by');
-            $table->string('deleted_by');
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
             $table->softDeletes();
         });
     }

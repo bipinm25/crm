@@ -25,9 +25,9 @@ class CreateCompaniesTable extends Migration
             $table->text('full_address')->nullable();
             $table->text('google_map_details')->nullable();
             $table->timestamps();
-            $table->string('created_by');
-            $table->string('updated_by');
-            $table->string('deleted_by');
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
             $table->softDeletes();
         });
     }

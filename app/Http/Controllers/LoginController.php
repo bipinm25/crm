@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
-
+use App\Models\LoginHistory;
+use Illuminate\Support\Facades\Http;
 
 class LoginController extends Controller
 {
@@ -19,7 +20,7 @@ class LoginController extends Controller
         return view('login.index');
     }
     
-    public function login(Request $request){
+    public function login(Request $request){        
 
         $messages = [
             'username.required' => 'UserName is required', 
@@ -33,12 +34,11 @@ class LoginController extends Controller
         
         $credentials = $request->only($this->username(), 'password');
 
-        if (Auth::attempt($credentials)) {            
+        if (Auth::attempt($credentials)) {    
+            $this->saveHistory($request);        
             return redirect('/dashboard');
-        }
-
-       
-
+        }      
+        $this->saveHistory($request, 1);
         return view('login.index',['msg'=>'Wrong Email/Password']);
 
     }
@@ -48,9 +48,29 @@ class LoginController extends Controller
         return redirect('/');
     }
 
-    public function username()
-    {
+    public function username(){
         return 'username';
+    }
+
+    public function saveHistory($r, $status = 0){
+        $ip = $r->ip();
+        $ip = '49.207.201.18';
+        $response = Http::retry(3, 100)->get('http://ip-api.com/json/'.$ip, [
+            'fields' => '66846719',     
+        ])->json();
+        
+        if($status === 0){
+            session(['login_timezone' => $response['timezone']]);
+        }
+
+        $history = new LoginHistory();
+        $history->login_ip = $ip;
+        $history->username = $r->username;
+        $history->login_details = json_encode($response);
+        $history->login_attempt_status = $status; //0-success, 1 - failed
+        $history->timezone = $response['timezone'];
+        $history->login_city = $response['city'];
+        $history->save();
     }
 
     
