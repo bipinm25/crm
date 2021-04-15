@@ -22,6 +22,6 @@ class CompanyComment extends Model
     }
 
     public function getCommentedAtAttribute(){
-        return (new Carbon($this->created_at))->timezone(session('login_timezone'))->format('d/M/Y H:i');
+        return (new Carbon($this->updated_at))->timezone(session('login_timezone'))->format('d/M/Y H:i');
     }
 }

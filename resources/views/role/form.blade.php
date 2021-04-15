@@ -39,8 +39,7 @@
                                         <th>Module</th>
                                         <th>Full Access</th>
                                         <th>Read</th>
-                                        <th>Read/Write</th>
-                                        <th>Delete</th>
+                                        <th>Read/Write</th>                                        
                                     </tr>
                                 </thead>
                                 <tbody>

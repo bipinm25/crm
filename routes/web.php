@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\StaffController;
 use App\Http\Middleware\CheckLogin;
 
 /*
@@ -41,23 +42,35 @@ Route::middleware([CheckLogin::class])->group(function(){ //'role:Super-admin
     /** Company */
     Route::get('/company',[CompanyController::class, 'index'])->name('company')->middleware('role_or_permission:Super-admin|company-full_access|company-read');
 
-    Route::get('/listcompany',[CompanyController::class, 'listCompany'])->name('listcompany')->middleware('role_or_permission:Super-admin|company-full_access|company-read');
+    Route::get('/listcompany',[CompanyController::class, 'listCompany'])->name('listcompany')->middleware('role_or_permission:Super-admin|company-full_access|company-read|company-read_write');
 
-    Route::get('/showcompany/{id?}',[CompanyController::class, 'showCompany'])->name('showcompany')->middleware('role_or_permission:Super-admin|company-full_access|company-read');
+    Route::get('/showcompany/{id?}',[CompanyController::class, 'showCompany'])->name('showcompany')->middleware('role_or_permission:Super-admin|company-full_access|company-read|company-read_write');
 
     Route::post('/savecompany',[CompanyController::class, 'saveCompany'])->name('savecompany')->middleware('role_or_permission:Super-admin|company-full_access|company-read_write');
 
+    Route::delete('/deletecompany',[CompanyController::class,'deleteCompany'])->name('deletecompany')->middleware('role_or_permission:Super-admin|company-full_access');
+
     Route::post('/savecomment',[CompanyController::class, 'saveComment'])->name('saveComment')->middleware('role_or_permission:Super-admin|company-full_access|company-read_write');
 
-    Route::get('/showcomments',[CompanyController::class, 'showComments'])->name('showcomments')->middleware('role_or_permission:Super-admin|company-full_access|company-read');
-
-    Route::get('/listcompanystaff',[CompanyController::class, 'listStaff'])->name('listcompanystaff')->middleware('role_or_permission:Super-admin|company-full_access|company-read');
-
-    Route::post('/savestaff',[CompanyController::class, 'saveStaff'])->name('savestaff')->middleware('role_or_permission:Super-admin|company-full_access|company-read_write');
-
+    Route::get('/showcomments',[CompanyController::class, 'showComments'])->name('showcomments')->middleware('role_or_permission:Super-admin|company-full_access|company-read|company-read_write');
     
+    Route::delete('/deletecomment',[CompanyController::class,'deleteComment'])->name('deletecomment')->middleware('role_or_permission:Super-admin|company-full_access');
+ 
 
     /***** End Company******/
+
+     /** Staff */ 
+     Route::get('/staff',[StaffController::class, 'index'])->name('staff')->middleware('role_or_permission:Super-admin|staff-full_access');
+
+     Route::get('/listcompanystaff',[StaffController::class, 'listStaff'])->name('listcompanystaff')->middleware('role_or_permission:Super-admin|company-full_access|company-read|company-read_write');
+ 
+     Route::post('/savestaff',[StaffController::class, 'saveStaff'])->name('savestaff')->middleware('role_or_permission:Super-admin|company-full_access|company-read_write');
+ 
+     Route::get('/getstaff',[StaffController::class,'getStaff'])->name('getstaff')->middleware('role_or_permission:Super-admin|company-full_access|company-read_write');
+
+     Route::delete('/deletestaff',[StaffController::class,'deleteStaff'])->name('deletestaff')->middleware('role_or_permission:Super-admin|company-full_access');
+ 
+     /***** End Staff******/    
 
     /** Users */
     Route::get('/users',[UserController::class, 'index'])->name('users')->middleware('role_or_permission:Super-admin|user-full_access|user-read');
@@ -66,12 +79,7 @@ Route::middleware([CheckLogin::class])->group(function(){ //'role:Super-admin
 
     Route::get('/getuser',[UserController::class, 'getUser'])->name('getuser');
 
-     Route::post('/saveuser',[UserController::class, 'saveUser'])->name('saveuser')->middleware('role_or_permission:Super-admin|user-full_access|user-read');
-
-    // Route::post('/savecomment',[UserController::class, 'saveComment'])->name('saveComment');
-
-    // Route::get('/showcomments',[UserController::class, 'showComments'])->name('showcomments');
-
+    Route::post('/saveuser',[UserController::class, 'saveUser'])->name('saveuser')->middleware('role_or_permission:Super-admin|user-full_access|user-read');
 
     /***** End Users******/
 

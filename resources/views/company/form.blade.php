@@ -1,10 +1,23 @@
 @extends('layout.template')
 
+@section('actions')
+<div class="content-header row">
+          <div class="content-header-left col-md-8 col-12 mb-2 breadcrumb-new">
+            <h3 class="content-header-title mb-0 d-inline-block">Company List</h3>
+            <div class="row breadcrumbs-top d-inline-block">
+              <div class="breadcrumb-wrapper col-12">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
+                  <li class="breadcrumb-item"><a href="{{route('company')}}">Company List</a></li>   
+                  <li class="breadcrumb-item"><a href="javascript:;">Manage Company</a></li>   
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+@endsection
+
 @section('content')
-
-
-
-
 <section id="basic-form-layouts">
 	<div class="row match-height">
 
@@ -94,7 +107,11 @@
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label for="contact_person">Contact Person</label>
-                                                            <input type="text" id="contact_person" class="form-control" placeholder="Contact Person" name="contact_person">
+                                                            <select name="contact_person_id" class="form-control">                                                         
+                                                                @foreach($staff as $s)
+                                                                    <option {{ $s->id == $company->contact_person_id?'selected':''}} value="{{$s->id}}">{{$s->first_name.' '.$s->last_name}}</option>
+                                                                @endforeach
+                                                            </select>                                                           
                                                         </div>
                                                     </div>
                                                     
@@ -121,28 +138,36 @@
                                     	
 							
 							</div>
-							<div class="tab-pane" id="tab2" aria-labelledby="base-tab2">
-                                    <div class="btn-group float-md-right">           
-                                    <a class="btn btn-info add_staff" href="javascript:;" data-toggle="modal" data-target="#add_staff_modal"><i class="fa fa-plus"></i> Add Staff</a>        
+							<div class="tab-pane" id="tab2" aria-labelledby="base-tab2">    
+
+                            <div class="card-head">
+                                <div class="card-content collapse show">
+                                    <div class="card-body">        
+                                
+                                        <table class="table table-striped table-bordered staff-list" style="width: 100% !important;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Staff Id</th>
+                                                    <th>First Name</th>
+                                                    <th>Last Name</th>
+                                                    <th>Email</th>
+                                                    <th>Mobile</th>                                                                             
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>                      
+                                        </table>
                                     </div>
-                            <div class="card-content collapse show">
-                                <div class="card-body">                                   
-                               
-                                    <table class="table table-striped table-bordered staff-list" style="width: 100% !important;">
-                                        <thead>
-                                            <tr>
-                                                <th>Id</th>
-                                                <th>First Name</th>
-                                                <th>Last Name</th>
-                                                <th>Email</th>
-                                                <th>Mobile</th>                                                                             
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>                      
-                                    </table>
                                 </div>
-                            </div>
+
+                                    <div class="card-header">        	
+                                        <a class="heading-elements-toggle"><i class="ft-ellipsis-h font-medium-3"></i></a>
+                                        <div class="heading-elements">
+                                            <a class="btn btn-primary btn-sm" href="javascript:;" data-toggle="modal" data-target="#add_staff_modal"><i class="ft-plus white"></i> Add Staff</a>            			           			
+                                        </div>
+                                    </div>
+                                </div>                   
+                           
 							</div>
                             
                             <div class="tab-pane" id="tab3" aria-labelledby="base-tab3">
@@ -187,7 +212,7 @@
 	</div>
 </section>
 
-<!-- Add User Modal -->
+<!-- Add Staff Modal -->
 <div class="modal fade text-left" id="add_staff_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
         <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -206,14 +231,15 @@
 						<form class="form" id="staff_form" autocomplete="off">
                             @csrf
                             <input type="hidden" value="{{$company->id}}" name="company_id"/>
-                            <input type="hidden" value="0" name="staff_id"/>
+                            <input type="hidden" value="0" id="staff_id" name="staff_id"/>
 							<div class="form-body">
-								<h4 class="form-section"><i class="ft-user"></i> Personal Info</h4>
+								<h4 class="form-section"><i class="ft-user"></i> Staff Info</h4>
 								<div class="row">
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="first_name">First Name</label>
 											<input type="text" id="first_name" class="form-control" placeholder="First Name" name="first_name">
+                                            <code class="first_name-error" style="background-color: inherit;"></code>
 										</div>
 									</div>
 									<div class="col-md-6">
@@ -226,16 +252,17 @@
 								<div class="row">
 									<div class="col-md-6">
 										<div class="form-group">
-											<label for="projectinput3">E-mail</label>
-											<input type="text" id="projectinput3" class="form-control" placeholder="E-mail" name="email">
+											<label for="email">E-mail</label>
+											<input type="text" id="email" class="form-control" placeholder="E-mail" name="email">
+                                            <code class="email-error" style="background-color: inherit;"></code>
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
-											<label for="projectinput4">Contact Number</label>
-											<input type="text" id="projectinput4" class="form-control" placeholder="Phone" name="phone">
+											<label for="mobile">Contact Number</label>
+											<input type="text" id="mobile" class="form-control" placeholder="Mobile" name="mobile">
 										</div>
-									</div>
+									</div>                                   
 								</div>							                              													
 						</form>
 					</div>
@@ -249,11 +276,12 @@
         </div>
         </div>
     </div>
-    <!-- End User Modal -->
+    <!-- End Staff Modal -->
 @endsection
 
 @section('javascript')
 <script>
+/** Comments Section **/
     $(function(){
         fetchcomments();
         list_staff({'company_id':'{{$company->id}}' });
@@ -265,11 +293,9 @@
 
     $('body').on('click', '.replay', function(){
         $(this).closest('.media-body').find('.chat-app-form:first').toggleClass('hidden');
-    });
+    });    
 
-    
-
-    function fetchcomments(){
+    var fetchcomments = function(){
         $.ajax({
             url:'{{route("showcomments")}}',
             method:'GET',
@@ -281,14 +307,22 @@
     }
 
     function saveCommnent(_this){
-        var _form = _this.closest('form');
-            var comment = _form.find('.comments').val();
+        var comment_id = 0;
+        var _form = _this.closest('form');        
+        var comment = _form.find('.comments').val();
+
+        if(comment.trim().length > 0){
+            if(_form.find('.comments').hasClass('editcomment')){                          
+                comment_id = parseInt(_form.find('.comments').data('comment_id'));
+            }
             var parent_id = _form.find('.comments').data('parent_id');
             var _data = {                   
                     'company_id':'{{$company->id}}',
                     'comment': comment,
                     'parent_id':parent_id,
+                    'comment_id': comment_id,
             };
+
             $.ajax({
                 url: "{{route('saveComment')}}",
                 method:'POST',
@@ -297,6 +331,7 @@
                 _form.find('.comments').val('');
                 fetchcomments();
             });
+        }        
     }
 
     $('body').on('keypress','.comments',function(e) {
@@ -306,8 +341,48 @@
         }
     });
 
+    $('body').on('click', '.edit_comment', function(){
+        $(this).addClass('hidden');
+        var comment_id = $(this).data('comment_id');
+        var ptag = $(this).closest('.media-body').find('.p_comment:first');
+        var comment = ptag.html();        
+        ptag.html(`<section class="chat-app-form">
+                                <form class="chat-app-input d-flex">
+                                <fieldset class="form-group position-relative has-icon-left col-10 m-0">
+                                    <div class="form-control-position">
+                                    <i class="icon-emoticon-smile"></i>
+                                    </div>
+                                    <input type="text" value="`+comment+`" data-parent_id="0" data-comment_id="`+comment_id+`" class="form-control comments input-sm editcomment" placeholder="Write comments...">
+                                    <div class="form-control-position control-position-right">
+                                    <i class="fa fa-paper-plane-o"></i>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="form-group position-relative has-icon-left col-2 m-0">
+                                    <button type="button" class="btn btn-info send_comment btn-sm"><span class="d-none d-lg-block">Send</span></button>
+                                </fieldset>
+                                </form>
+                            </section>`);
+
+    });
+
+    $('body').on('click', '.delete_comment', function(){        
+       var comment_id = $(this).data('comment_id');
+       var swalopt = { 'title': "Delete Comment?",
+                       'deleteurl' : '{{route("deletecomment")}}',
+                       'method' : 'delete',
+                       'ajaxdata' : {'comment_id':comment_id}
+                     };
+       var toastropt = { 'title': "Comment Deleted"};
+
+       generalDelete(swalopt, toastropt, fetchcomments);
+    });
+
+    /***** End Comments Section  ****/
+
+    
+    /******** Staff section */
     var staff_list;
-    function list_staff(params){
+    var list_staff = function(params = {}){
         if ($.fn.DataTable.isDataTable('.staff-list')) {
             staff_list.destroy();
         }
@@ -336,15 +411,97 @@
         });  
     }
 
-    $('.save_staff').on('click', function(){
+    $('#save_staff').on('click', function(){
         $('#staff_form').ajaxSubmit({
             url:'{{route("savestaff")}}',
             method:'post',
+            beforeSubmit: function(arr, $form, options) {
+                arr.push({name: "staff_type", value: "2", type: "hidden",});
+            },
             success:function(res){
-                    $('#add_staff_modal').modal('hide');
-                    list_staff();
-                }            
+                toastr.success("", "Saved", { positionClass: "toast-bottom-right", containerId: "toast-bottom-right" });
+                resetStaffForm();
+                clearStaffError();
+                $('#add_staff_modal').modal('hide');
+                list_staff();
+            },
+            error: function(json){                
+                if(json.status === 422) {
+                    toastr.error("", "Error", { positionClass: "toast-bottom-right", containerId: "toast-bottom-right" });
+                    var errors = json.responseJSON;                   
+                    $.each(errors.errors, function (key, value) {                       
+                        $('#staff_form .'+key+'-error').html(value);
+                    });
+                }
+            }          
         });   
     });
+
+    $('body').on('click','.edit_staff', function(){
+        var staff_id = $(this).data('staff_id');
+        $('#staff_form').find('#staff_id').val(staff_id);
+        $.ajax({
+            url:'{{route("getstaff")}}',
+            data: {'staff_id':staff_id},
+            method:'get',
+            dataType:'json',            
+        }).done(function(res){         
+            var formfields = $('#staff_form').serializeArray();
+            
+            $.each(formfields,function(k,v){
+                if(v.name in res){
+                    $('#staff_form').find('#'+v.name).val(res[v.name]);   
+                    $('#add_staff_modal').modal('show');
+                }
+            });            
+        });
+    });
+
+
+    $('#add_staff_modal').on('hidden.bs.modal', function () {
+        resetStaffForm();
+        clearStaffError();
+    });
+
+    function resetStaffForm(){
+        $('#staff_form')[0].reset();
+        $('#staff_form').find("input[name=staff_id]").val('0');
+    }
+
+    function clearStaffError(){
+        $('#staff_form code').each(function (key, value) {                       
+            $(this).html('');
+        });
+    }
+
+    $('body').on('click','.delete_staff', function(){
+       var staff_id =  $(this).data('staff_id');
+
+       var swalopt = { 'title': "Delete Staff?",
+                       'deleteurl' : '{{route("deletestaff")}}',
+                       'method' : 'delete',
+                       'ajaxdata' : {'staff_id':staff_id}
+                     };
+       var toastropt = { 'title': "Staff Deleted"};
+       generalDelete(swalopt, toastropt, list_staff);	
+    });
+
+    /******** End Staff section */
+    
+
+    
+
+    
+
+    
+
+    
+
+
+
+
+
+
+    
 </script>
 @endsection

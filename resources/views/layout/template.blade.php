@@ -20,6 +20,8 @@
     <link rel="stylesheet" type="text/css" href="{{asset("app-assets/vendors/css/tables/datatable/datatables.min.css")}}">
     <link rel="stylesheet" type="text/css" href="{{asset("app-assets/vendors/css/extensions/unslider.css")}}">
     <link rel="stylesheet" type="text/css" href="{{asset("app-assets/vendors/css/weather-icons/climacons.min.css")}}">
+    <link rel="stylesheet" type="text/css" href="{{asset("app-assets/vendors/css/extensions/sweetalert.css")}}">
+    <link rel="stylesheet" type="text/css" href="{{asset("app-assets/vendors/css/extensions/toastr.css")}}">
     <!-- END VENDOR CSS-->
     <link rel="stylesheet" type="text/css" href="{{asset("app-assets/vendors/css/forms/icheck/icheck.css")}}">
     <link rel="stylesheet" type="text/css" href="{{asset("app-assets/vendors/css/forms/icheck/custom.css")}}">
@@ -66,6 +68,8 @@
     <script src="{{ asset("app-assets/vendors/js/extensions/underscore-min.js")}}"></script>
     <script src="{{ asset("app-assets/vendors/js/extensions/clndr.min.js")}}"></script>
     <script src="{{ asset("app-assets/vendors/js/extensions/unslider-min.js")}}"></script>
+    <script src="{{ asset("app-assets/vendors/js/extensions/sweetalert.min.js")}}"></script>
+    <script src="{{ asset("app-assets/vendors/js/extensions/toastr.min.js")}}"></script>
     <!-- END PAGE VENDOR JS-->
     <!-- BEGIN ROBUST JS-->
     <script src="{{ asset("app-assets/js/core/app-menu.min.js")}}"></script>
@@ -73,12 +77,53 @@
     <script src="{{ asset("app-assets/js/scripts/customizer.min.js")}}"></script>
     <script src="{{ asset("app-assets/vendors/js/forms/icheck/icheck.min.js")}}"></script>
     <!-- END ROBUST JS-->    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn" crossorigin="anonymous"></script>
     <script>
       $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
       });
+
+      function generalDelete(swalopt = {}, toastropt = {}, callback){
+
+        swal({
+              title: swalopt.title,
+              text: "",
+              icon: "warning",
+              showCancelButton: true,
+              buttons: {
+                        cancel: {
+                          text: "Cancel",
+                          value: null,
+                          visible: true,
+                          className: "btn-warning",
+                          closeModal: true,
+                      },
+                        confirm: {
+                          text: "Yes, delete it!",
+                          value: true,
+                          visible: true,
+                          className: "",
+                          closeModal: true
+                      }
+              }
+          }).then(isConfirm => {
+                  if (isConfirm) {                
+                      $.ajax({
+                          url: swalopt.deleteurl,
+                          method: swalopt.method,
+                          data: swalopt.ajaxdata,                     
+                      }).done(function(res){
+                          toastr.success("", toastropt.title, { positionClass: "toast-bottom-right", containerId: "toast-bottom-right" });
+                          if(typeof callback == 'function'){
+                            callback();
+                          }
+                      });                
+                  }
+		        });
+
+      }
     </script>
     @yield('javascript')
   </body>

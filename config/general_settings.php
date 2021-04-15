@@ -12,24 +12,21 @@ return array(
     ],
 
     'permissions' => [
-        'company' => [
-            'full_access',
-            'read',
-            'read_write',
-            'delete',
-        ],
-        'company_staff' => [
-            'full_access',
-            'read',
-            'read_write',
-            'delete',
-        ],
-        'user' => [
-            'full_access',
-            'read',
-            'read_write',
-            'delete',
-        ],
+            'company' => [
+                'full_access',
+                'read',
+                'read_write',            
+            ],
+            'company_staff' => [
+                'full_access',
+                'read',
+                'read_write',            
+            ],
+            'user' => [
+                'full_access',
+                'read',
+                'read_write',  
+            ],
     ],
 
 );
