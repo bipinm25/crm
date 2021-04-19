@@ -11,21 +11,26 @@ return array(
         3 => 'In Progress',
     ],
 
-    'permissions' => [
+    'permissions' => [            
             'company' => [
-                'full_access',
-                'read',
-                'read_write',            
+                'full_access' => true,
+                'read' => true,
+                'read_write' => true,          
             ],
-            'company_staff' => [
-                'full_access',
-                'read',
-                'read_write',            
-            ],
+            // 'company_staff' => [
+            //     'full_access',
+            //     'read',
+            //     'read_write',            
+            // ],
             'user' => [
-                'full_access',
-                'read',
-                'read_write',  
+                'full_access' => true,
+                'read' => true,
+                'read_write' => true,
+            ],
+            'logs' => [
+                'full_access' => true,
+                'read' => false,
+                'read_write' => false,
             ],
     ],
 

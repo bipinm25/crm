@@ -6,12 +6,12 @@
           <li class=" nav-item"><a href="{{route('company')}}"><i class="icon-menu"></i><span class="menu-title" data-i18n="nav.dash.main">Company</span></a></li>    
           <li class=" nav-item"><a href="{{route('users')}}"><i class="icon-user"></i><span class="menu-title" data-i18n="nav.dash.main">User</span></a></li>
 
-          <li class=" nav-item"><a href=""><i class="icon-menu"></i><span class="menu-title" data-i18n="nav.dash.main">Task</span></a></li>
-        
-          <li class=" navigation-header"><span data-i18n="nav.category.support">Settings</span><i class="ft-more-horizontal ft-minus" data-toggle="tooltip" data-placement="right" data-original-title="Settings"></i></li>
+          <li class=" nav-item"><a href="{{route('group')}}"><i class="icon-menu"></i><span class="menu-title" data-i18n="nav.dash.main">Chat</span></a></li>
+          <li class=" nav-item"><a href="{{route('logs')}}"><i class="icon-clock"></i><span class="menu-title" data-i18n="nav.dash.main">User Logs</span></a></li>
 
-          <li class=" nav-item"><a href=""><i class="ft-settings"></i><span class="menu-title" data-i18n="nav.support_raise_support.main">General Settings</span></a></li>
           @hasrole('Super-admin')
+            <li class=" navigation-header"><span data-i18n="nav.category.support">Settings</span><i class="ft-more-horizontal ft-minus" data-toggle="tooltip" data-placement="right" data-original-title="Settings"></i></li>
+            <li class=" nav-item"><a href=""><i class="ft-settings"></i><span class="menu-title" data-i18n="nav.support_raise_support.main">General Settings</span></a></li>        
             <li class=" nav-item"><a href="{{route('role')}}"><i class="icon-support"></i><span class="menu-title" data-i18n="nav.support_raise_support.main">Role & Permission</span></a></li>
           @endhasrole
         </ul>

@@ -46,8 +46,12 @@
                                     @foreach(Config('general_settings.permissions') as $module => $permission)
                                     <tr>
 									<td>{{ucfirst(str_replace('_',' ',$module))}}</td>
-                                        @foreach($permission as $p)                                            
-                                            <td><input type="checkbox" class="{{$p=='full_access'?$p:''}}"  {{in_array($module.'-'.$p, $all_permission)?'checked':''}}  value="1" name="permission[{{$module}}][{{$p}}]"/></td>    
+                                        @foreach($permission as $p => $status)                            
+                                            <td>
+											@if($status)
+												<input type="checkbox" class="{{$p=='full_access'?$p:''}}"  {{in_array($module.'-'.$p, $all_permission)?'checked':''}}  value="1" name="permission[{{$module}}][{{$p}}]"/>
+											@endif
+											</td>    
                                         @endforeach 
                                         </tr>                        
                                     @endforeach                                                           

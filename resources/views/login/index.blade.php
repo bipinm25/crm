@@ -61,8 +61,8 @@
                                 <div class="form-control-position">
                                     <i class="fa fa-key"></i>
                                 </div>
-                            </fieldset>                          
-                            <p>{{$msg??''}}</p>        
+                            </fieldset>                            
+                                @if(isset($msg))<p class="badge-default badge-danger block-tag text-left"><small class="block-area white">{{$msg}}</small></p>@endif                                  
                             <button type="submit" class="btn btn-info btn-lg btn-block"><i class="ft-unlock"></i> Login</button>
                         </form>
                     </div>

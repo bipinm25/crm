@@ -15,7 +15,7 @@ class AddStaffIdToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->integer('staff_id')->default(0)->nullable();
-            $table->integer('role_id')->default(0)->nullable();
+            $table->integer('status')->default(1)->comment('0-inactive 1-active');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('deleted_by')->nullable();
@@ -31,8 +31,7 @@ class AddStaffIdToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('staff_id');
-            $table->dropColumn('role_id');
+            $table->dropColumn('staff_id');            
             $table->dropColumn('created_by');
             $table->dropColumn('updated_by');
             $table->dropColumn('deleted_by');

@@ -13,11 +13,13 @@
               </div>
             </div>
           </div>
-          <div class="content-header-right col-md-4 col-12">
-            <div class="btn-group float-md-right">              
-              <a class="btn btn-info" href="javascript:;" data-toggle="modal" data-target="#add_company_modal"><i class="fa fa-plus"></i> Add Company</a>     
+          @canany(['company-full_access','company-read_write'])
+            <div class="content-header-right col-md-4 col-12">
+                <div class="btn-group float-md-right">              
+                <a class="btn btn-info" href="javascript:;" data-toggle="modal" data-target="#add_company_modal"><i class="fa fa-plus"></i> Add Company</a>     
+                </div>
             </div>
-          </div>
+          @endcanany
         </div>
 @endsection
 
@@ -95,6 +97,8 @@
                                     <th>Sub Status</th>
                                     <th>mobile</th>
                                     <th>email</th>                                    
+                                    <th>Created By</th>                                    
+                                    <th>Date Added</th>                                    
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -222,6 +226,8 @@ var list_company = function(params = {}){
                 {data: 'sub_status_id','name':'sub_status_id'},
                 {data: 'mobile', name: 'mobile'},
                 {data: 'email', name: 'email'},
+                {data: 'created_by', name: 'created_by'},
+                {data: 'date_added', name: 'date_added'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ],
             'order': [[0, "desc" ]],

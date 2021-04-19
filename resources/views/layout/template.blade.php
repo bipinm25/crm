@@ -56,6 +56,97 @@
    </div>
 </div>
 
+<!-- Edit User Modal -->
+<div class="modal fade text-left" id="edit_profile_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel1">Edit Profile</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            <div class="card">			
+				<div class="card-content collapse show">
+					<div class="card-body">						
+						<form class="form" id="profile_form" autocomplete="off">
+                @csrf
+              <input type="hidden" value="{{Auth::user()->id}}" id="user_id" name="user_id"/>
+							<div class="form-body">
+								<h4 class="form-section"><i class="ft-user"></i> Personal Info</h4>
+								<div class="row">
+
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="first_name">First Name</label>
+											<input type="text" id="first_name" class="form-control" placeholder="First Name" name="first_name">
+                       <code class="first_name-error" style="background-color: inherit;"></code>
+										</div>
+									</div>
+                  <div class="col-md-6">
+										<div class="form-group">
+											<label for="last_name">Last Name</label>
+											<input type="text" id="last_name" class="form-control" placeholder="Last Name" name="last_name">
+                       <code class="last_name-error" style="background-color: inherit;"></code>
+										</div>
+									</div>								
+								</div>
+                <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="text" id="email" class="form-control" placeholder="Email" name="email">
+                    <code class="email-error" style="background-color: inherit;"></code>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="mobile">Mobile</label>
+                    <input type="text" id="mobile" class="form-control" placeholder="Mobile" name="mobile">
+                    <code class="mobile-error" style="background-color: inherit;"></code>
+                  </div>
+                </div>
+                </div>
+                <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="current_password">Current Password</label>
+                    <input type="password" id="current_password" class="form-control" placeholder="Current Password" name="current_password">
+                    <code class="current_password-error" style="background-color: inherit;"></code>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="new_password">New Password</label>
+                    <input type="password" id="new_password" class="form-control" placeholder="New Password" name="new_password">
+                    <code class="new_password-error" style="background-color: inherit;"></code>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="re_enter_password">Re-Enter Password</label>
+                    <input type="password" id="re_enter_password" class="form-control" placeholder="Re-Enter Password" name="re_enter_password">
+                    <code class="re_enter_password-error" style="background-color: inherit;"></code>
+                  </div>
+                </div>
+                </div>																							
+						</form>
+					</div>
+				</div>
+			</div>
+        </div>
+            <div class="">
+                <button type="button" class="btn btn-warning mr-1" data-dismiss="modal"><i class="ft-x"></i> Close</button>
+                <button type="button" id="save_profile"  class="btn btn-primary"><i class="fa fa-check-square-o"></i> Save</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- End User Modal -->
+
 @include('layout.footer')
     <!-- BEGIN VENDOR JS-->
     <script src="{{ asset("app-assets/vendors/js/vendors.min.js")}}"></script>
@@ -85,45 +176,82 @@
         }
       });
 
-      function generalDelete(swalopt = {}, toastropt = {}, callback){
+      $('body').on('click','#edit_profile', function(){
+        $.ajax({
+            url:'{{route("getprofile")}}',
+            method: 'get',
+            dataType: 'json'
+        }).done(function(res){
+          var formfields = $('#profile_form').serializeArray();            
+            $.each(formfields,function(k,v){
+                if(v.name in res){
+                    $('#profile_form').find('#'+v.name).val(res[v.name]);                    
+                }
+            });   
+          $('#edit_profile_modal').modal('show');
+        });        
+      });
 
-        swal({
-              title: swalopt.title,
-              text: "",
-              icon: "warning",
-              showCancelButton: true,
-              buttons: {
-                        cancel: {
-                          text: "Cancel",
-                          value: null,
-                          visible: true,
-                          className: "btn-warning",
-                          closeModal: true,
-                      },
-                        confirm: {
-                          text: "Yes, delete it!",
-                          value: true,
-                          visible: true,
-                          className: "",
-                          closeModal: true
-                      }
-              }
-          }).then(isConfirm => {
-                  if (isConfirm) {                
-                      $.ajax({
-                          url: swalopt.deleteurl,
-                          method: swalopt.method,
-                          data: swalopt.ajaxdata,                     
-                      }).done(function(res){
-                          toastr.success("", toastropt.title, { positionClass: "toast-bottom-right", containerId: "toast-bottom-right" });
-                          if(typeof callback == 'function'){
-                            callback();
-                          }
-                      });                
-                  }
-		        });
+      
+    $('#save_profile').on('click',function(){        
+        $('#profile_form').ajaxSubmit({
+            url:'{{route("saveprofile")}}',
+            method:'post',
+            success:function(res){
+                    toastr.success("", "Saved", { positionClass: "toast-bottom-right", containerId: "toast-bottom-right" });
+                    $('#edit_profile_modal').modal('hide');                    
+                },
+            error: function(json){            
+                if(json.status === 422) {
+                    toastr.error("", "Error", { positionClass: "toast-bottom-right", containerId: "toast-bottom-right" });                   
+                    var errors = json.responseJSON;                        
+                    $.each(errors.errors, function (key, value) {                         
+                        $('#profile_form .'+key+'-error').html(value);
+                    });
+                }
+            }               
+        });        
+    });
+     
 
-      }
+    function generalDelete(swalopt = {}, toastropt = {}, callback){
+      swal({
+            title: swalopt.title,
+            text: "",
+            icon: "warning",
+            showCancelButton: true,
+            buttons: {
+                      cancel: {
+                        text: "Cancel",
+                        value: null,
+                        visible: true,
+                        className: "btn-warning",
+                        closeModal: true,
+                    },
+                      confirm: {
+                        text: "Yes, delete it!",
+                        value: true,
+                        visible: true,
+                        className: "",
+                        closeModal: true
+                    }
+            }
+        }).then(isConfirm => {
+                if (isConfirm) {                
+                    $.ajax({
+                        url: swalopt.deleteurl,
+                        method: swalopt.method,
+                        data: swalopt.ajaxdata,                     
+                    }).done(function(res){
+                        toastr.success("", toastropt.title, { positionClass: "toast-bottom-right", containerId: "toast-bottom-right" });
+                        if(typeof callback == 'function'){
+                          callback();
+                        }
+                    });                
+                }
+          });
+
+    }
     </script>
     @yield('javascript')
   </body>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\HelperPermission as HelperPermission;
 use Illuminate\Http\Request;
 use App\Models\Company;
 use App\Models\CompanyComment;
@@ -10,8 +11,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class CompanyController extends Controller
-{
-    public function index(){
+{    
+
+    public function index(){ 
         return view('company.index');
     }
 
@@ -35,7 +37,7 @@ class CompanyController extends Controller
         ];
         
         Validator::make($req->all(), [
-            'company_name' => 'required',          
+            'company_name' => 'required',       
         ], $messages)->validate();
 
         
@@ -77,7 +79,7 @@ class CompanyController extends Controller
         if($req->ajax()){
             echo json_encode(['company_id' => $company->id, 'redirecturl' => route('showcompany', $company->id)]);
             exit;
-        }
+        }        
 
         return redirect('/company');
         
@@ -101,15 +103,25 @@ class CompanyController extends Controller
             }
 
             
-            $data = Company::where($whereCompany)->get();          
-            return datatables()->of($data) 
-                    ->editColumn('status_id', function($row) use($general_settings){
+            $data = Company::with('user')->where($whereCompany)->get();            
+            return datatables()->of($data)
+                    ->editColumn('created_by', function($row){
+                        return  $row->user->staff->first_name.''.$row->user->staff->last_name;
+                    })->editColumn('status_id', function($row) use($general_settings){
                         return  (int)$row->status_id > 0 ? $general_settings['company_status'][$row->status_id] : '';
                     })->editColumn('sub_status_id', function($row) use($general_settings){
                         return  (int)$row->sub_status_id > 0?$general_settings['company_sub_status'][$row->sub_status_id]:'';
-                    })->addColumn('action', function($row){                        
-                        $btn = '<a href="'.route('showcompany', $row->id).'" title="Edit" class=""><i class="icon-note"></i></a>
-                                <a href="javascript:void(0)" data-company_id="'.$row->id.'" title="Delete" class="delete_company"><i class="icon-trash"></i></a>';
+                    })->addColumn('action', function($row){
+
+                        $canedit = HelperPermission::instance()->checkPermissions(['company-full_access', 'company-read_write']);
+                        $fullaccess = HelperPermission::instance()->checkPermissions(['company-full_access']);
+
+                        $delete = $fullaccess?'<a href="javascript:void(0)" data-company_id="'.$row->id.'" title="Delete" class="delete_company"><i class="icon-trash"></i></a>':'';                     
+                        $icon = '<i class="icon-eye"></i>';
+                        if($canedit){         
+                            $icon = '<i class="icon-note"></i>';
+                        }
+                        $btn = '<a href="'.route('showcompany', $row->id).'" title="Edit" class="">'.$icon.'</a> '.$delete;
                         return $btn;
                     })
                     ->rawColumns(['action'])
@@ -120,7 +132,10 @@ class CompanyController extends Controller
 
     public function deleteCompany(Request $req){
         if((int)$req->company_id > 0){
-            Company::findOrFail((int)$req->company_id)->delete();
+            $company = Company::findOrFail((int)$req->company_id);      
+            $company->deleted_by = Auth::user()->id;
+            $company->save();
+            $company->delete();
         }
     }
 
@@ -164,14 +179,25 @@ class CompanyController extends Controller
         $comments = CompanyComment::with('user')->where('company_id', $company_id)->where('parent_id', $parent_id)->get();
 
         $html = '';
+        $canedit = HelperPermission::instance()->checkPermissions(['company-full_access', 'company-read_write']);
+        $fullaccess = HelperPermission::instance()->checkPermissions(['company-full_access']);
+
+    
         foreach($comments as $comment){
 
             $me = $comment->user->username == Auth::user()->username ? true : false;
 
-            $commented_by = $me?'Me':$comment->user->username;
+            $commented_by = $me?'Me':$comment->user->username;            
 
-            $action = $me ?'<li class="pr-1"><a href="javascript:void(0)" data-comment_id="'.$comment->id.'" title="Edit" class="edit_comment"><i class="icon-note"></i></a></li>
-                            <li class="pr-1"><a href="javascript:void(0)" data-comment_id="'.$comment->id.'" title="Delete" class="delete_comment"><i class="icon-trash"></i></a></li>':'';
+            $action = ($me && $canedit) ?
+                            '<li class="pr-1"><a href="javascript:void(0)" data-comment_id="'.$comment->id.'" title="Edit" class="edit_comment"><i class="icon-note"></i></a></li>':'';
+
+            $delete = ($me && $fullaccess)? '<li class="pr-1"><a href="javascript:void(0)" data-comment_id="'.$comment->id.'" title="Delete" class="delete_comment"><i class="icon-trash"></i></a></li>' : '';
+
+            $action .= $delete;
+
+            $replay = $canedit? '<li class="pr-1"><a href="javascript:;" class="replay"><span class="fa fa-commenting-o"></span> Replay</a></li>':'';
+
 
             $html .= '<div class="media">
                         <div class="media-left pr-1">
@@ -182,9 +208,8 @@ class CompanyController extends Controller
                         <div class="media-body">
                             <p class="text-bold-600 mb-0"><a href="javascript:;">'.$commented_by.'</a> - '.$comment->commented_at.'</p>
                             <p class="m-0 p_comment">'.$comment->comment.'</p>
-                            <ul class="list-inline mb-1">                                                               
-                                <li class="pr-1"><a href="javascript:;" class="replay"><span class="fa fa-commenting-o"></span> Replay</a></li>
-                                '.$action.'                      
+                            <ul class="list-inline mb-1">                                
+                                '.$replay.$action.'              
                             </ul>
                             <section class="chat-app-form hidden">
                                 <form class="chat-app-input d-flex">
@@ -209,9 +234,7 @@ class CompanyController extends Controller
         }        
 
        return $html;
-    }
-
-
+    }    
 
     
 }

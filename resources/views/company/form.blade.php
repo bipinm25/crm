@@ -107,14 +107,14 @@
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label for="contact_person">Contact Person</label>
-                                                            <select name="contact_person_id" class="form-control">                                                         
+                                                            <select name="contact_person_id" class="form-control">
+                                                                <option value="0">Select Person</option>                                                   
                                                                 @foreach($staff as $s)
                                                                     <option {{ $s->id == $company->contact_person_id?'selected':''}} value="{{$s->id}}">{{$s->first_name.' '.$s->last_name}}</option>
                                                                 @endforeach
                                                             </select>                                                           
                                                         </div>
-                                                    </div>
-                                                    
+                                                    </div>                                                                                                     
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-12">
@@ -125,12 +125,13 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <div class="form-actions">                                               
-                                                <button type="submit" class="btn btn-primary">
-                                                    <i class="fa fa-check-square-o"></i> Save
-                                                </button>
-                                            </div>
+                                            @canany(['company-full_access','company-read_write'])
+                                                <div class="form-actions">                                               
+                                                    <button type="submit" class="btn btn-primary">
+                                                        <i class="fa fa-check-square-o"></i> Save
+                                                    </button>
+                                                </div>
+                                            @endcanany
                                         </form>
                                     </div>
                                 </div>
@@ -159,50 +160,52 @@
                                         </table>
                                     </div>
                                 </div>
-
+                                @canany(['company-full_access','company-read_write'])
                                     <div class="card-header">        	
                                         <a class="heading-elements-toggle"><i class="ft-ellipsis-h font-medium-3"></i></a>
                                         <div class="heading-elements">
                                             <a class="btn btn-primary btn-sm" href="javascript:;" data-toggle="modal" data-target="#add_staff_modal"><i class="ft-plus white"></i> Add Staff</a>            			           			
                                         </div>
                                     </div>
+                                @endcanany
                                 </div>                   
                            
 							</div>
                             
-                            <div class="tab-pane" id="tab3" aria-labelledby="base-tab3">
-                            
+                            <div class="tab-pane" id="tab3" aria-labelledby="base-tab3">                            
                             <div class="timeline-card card border-grey border-lighten-2">                
                                     <div class="card-content">
                                         <div class="card-body">
                                             <div class="row">                                                
                                                 <div class="col-lg-12 col-12">
                                                 <div id="comment_div"></div>
-                                                
-                                                <div class="form-actions">
-                                                <section class="chat-app-form">
-                                                    <form class="chat-app-input d-flex">
-                                                    <fieldset class="form-group position-relative has-icon-left col-10 m-0">
-                                                        <div class="form-control-position">
-                                                        <i class="icon-emoticon-smile"></i>
-                                                        </div>
-                                                        <input type="text" data-parent_id="0" class="form-control comments" id="iconLeft4-message" placeholder="Write comments...">
-                                                        <div class="form-control-position control-position-right">
-                                                        <i class="fa fa-paper-plane-o"></i>
-                                                        </div>
-                                                    </fieldset>
-                                                    <fieldset class="form-group position-relative has-icon-left col-2 m-0">
-                                                        <button type="button" class="btn btn-info send_comment"><span class="d-none d-lg-block">Send</span></button>
-                                                    </fieldset>
-                                                    </form>
-                                                </section>
-                                                </div>
+                                                @canany(['company-full_access','company-read_write'])
+                                                    <div class="form-actions">                                                
+                                                    <section class="chat-app-form">
+                                                        <form class="chat-app-input d-flex">
+                                                        <fieldset class="form-group position-relative has-icon-left col-10 m-0">
+                                                            <div class="form-control-position">
+                                                            <i class="icon-emoticon-smile"></i>
+                                                            </div>
+                                                            <input type="text" data-parent_id="0" class="form-control comments" id="iconLeft4-message" placeholder="Write comments...">
+                                                            <div class="form-control-position control-position-right">
+                                                            <i class="fa fa-paper-plane-o"></i>
+                                                            </div>
+                                                        </fieldset>                                                   
+                                                            <fieldset class="form-group position-relative has-icon-left col-2 m-0">
+                                                                <button type="button" class="btn btn-info send_comment"><span class="d-none d-lg-block">Send</span></button>
+                                                            </fieldset>                                                    
+                                                        </form>
+                                                    </section>
+                                                    </div>
+                                                @endcanany
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 							</div>
 						</div>
+
 					</div>
 				</div>
 			</div>
@@ -217,7 +220,7 @@
         <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel1">Add/Edit Staff</h4>
+            <h4 class="modal-title" id="myModalLabel1">@canany(['company-full_access','company-read_write']) Add/Edit Staff @endcanany</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -271,16 +274,18 @@
         </div>
             <div class="">
                 <button type="button" class="btn btn-warning mr-1" data-dismiss="modal"><i class="ft-x"></i> Close</button>
-                <button type="button" id="save_staff"  class="btn btn-primary"><i class="fa fa-check-square-o"></i> Save</button>
+                @canany(['company-full_access','company-read_write'])
+                    <button type="button" id="save_staff"  class="btn btn-primary"><i class="fa fa-check-square-o"></i> Save</button>
+                @endcanany
             </div>
         </div>
         </div>
     </div>
     <!-- End Staff Modal -->
 @endsection
-
 @section('javascript')
 <script>
+
 /** Comments Section **/
     $(function(){
         fetchcomments();
@@ -446,14 +451,13 @@
             method:'get',
             dataType:'json',            
         }).done(function(res){         
-            var formfields = $('#staff_form').serializeArray();
-            
+            var formfields = $('#staff_form').serializeArray();            
             $.each(formfields,function(k,v){
                 if(v.name in res){
-                    $('#staff_form').find('#'+v.name).val(res[v.name]);   
-                    $('#add_staff_modal').modal('show');
+                    $('#staff_form').find('#'+v.name).val(res[v.name]);                    
                 }
-            });            
+            });     
+            $('#add_staff_modal').modal('show');       
         });
     });
 
@@ -474,7 +478,7 @@
         });
     }
 
-    $('body').on('click','.delete_staff', function(){
+    $('body').on('click', '.delete_staff', function(){
        var staff_id =  $(this).data('staff_id');
 
        var swalopt = { 'title': "Delete Staff?",
@@ -487,21 +491,6 @@
     });
 
     /******** End Staff section */
-    
-
-    
-
-    
-
-    
-
-    
-
-
-
-
-
-
-    
+        
 </script>
 @endsection
