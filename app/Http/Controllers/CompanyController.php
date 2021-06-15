@@ -234,7 +234,24 @@ class CompanyController extends Controller
         }        
 
        return $html;
-    }    
+    }
+
+    public function getCompany(Request $req){
+       
+        $company = Company::where('name', 'like', $req->term.'%')->limit(5)->get();
+
+        $response = array();
+        foreach($company as $com){
+           $response[] = array(
+                "id"=>$com->id,
+                "text"=>$com->name
+           );
+        }
+  
+        return response()->json($response);
+        exit;
+
+    }
 
     
 }

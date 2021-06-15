@@ -62,13 +62,30 @@ Route::middleware([CheckLogin::class])->group(function(){ //'role:Super-admin
     /***** End Company******/
 
     /** Chat */ 
-    Route::get('/group',[GroupController::class, 'index'])->name('group')->middleware('role_or_permission:Super-admin|chat-full_access'); 
+    Route::get('/group', [GroupController::class, 'index'])->name('group')->middleware('role_or_permission:Super-admin|chat-full_access'); 
     
-    Route::get('/listgroup',[GroupController::class, 'listGroup'])->name('listgroup')->middleware('role_or_permission:Super-admin|chat-full_access|chat-read|chat-read_write');
+    Route::get('/listgroup', [GroupController::class, 'listGroup'])->name('listgroup')->middleware('role_or_permission:Super-admin|chat-full_access|chat-read|chat-read_write');
 
-    Route::get('/groupchat/{id?}',[GroupController::class, 'groupChat'])->name('groupchat')->middleware('role_or_permission:Super-admin|chat-full_access|chat-read|chat-read_write');
+    Route::get('/groupchat/{id?}', [GroupController::class, 'groupChat'])->name('groupchat')->middleware('role_or_permission:Super-admin|chat-full_access|chat-read|chat-read_write');
 
+    Route::get('/getcompany', [CompanyController::class, 'getCompany'])->name('getcompany')->middleware('role_or_permission:Super-admin|chat-full_access|chat-read_write');
 
+    Route::post('/savegroup',[GroupController::class, 'saveGroup'])->name('savegroup')->middleware('role_or_permission:Super-admin|chat-full_access|chat-read_write');
+
+    Route::get('/searchusers', [GroupController::class, 'searchUsers'])->name('searchusers')->middleware('role_or_permission:Super-admin|chat-full_access|chat-read_write');
+
+    Route::get('/listgroupmembers', [GroupController::class, 'listGroupMembers'])->name('listgroupmembers')->middleware('role_or_permission:Super-admin|chat-full_access|chat-read_write');    
+
+    Route::post('/addmembers', [GroupController::class, 'addMembers'])->name('addmembers')->middleware('role_or_permission:Super-admin|chat-full_access|chat-read_write');
+    
+    Route::post('/sendmessage', [GroupController::class, 'sendMessage'])->name('sendmessage')->middleware('role_or_permission:Super-admin|chat-full_access|chat-read_write');
+
+    Route::get('/downloadfile', [GroupController::class, 'downloadFile'])->name('downloadfile')->middleware('role_or_permission:Super-admin|chat-full_access|chat-read|chat-read_write');
+    
+    Route::get('/getchat', [GroupController::class, 'getChat'])->name('getchat')->middleware('role_or_permission:Super-admin|chat-full_access|chat-read|chat-read_write');
+    
+    
+    
     /***** End Chat ******/
 
 
@@ -98,6 +115,7 @@ Route::middleware([CheckLogin::class])->group(function(){ //'role:Super-admin
 
     /***** End Users******/
 
+
     /** Role & Permission */
     Route::get('/role',[RolePermissionController::class, 'index'])->name('role');
 
@@ -113,6 +131,11 @@ Route::middleware([CheckLogin::class])->group(function(){ //'role:Super-admin
     Route::get('/getlogs',[LogsActivityController::class, 'listLogs'])->name('getlogs')->middleware('role_or_permission:Super-admin|logs-full_access');
 
     Route::get('/getlog/{id?}',[LogsActivityController::class, 'getLog'])->name('getlog')->middleware('role_or_permission:Super-admin|logs-full_access');
+
+    Route::get('/getloginhistory',[LogsActivityController::class, 'getLoginHistory'])->name('getloginhistory')->middleware('role_or_permission:Super-admin|logs-full_access');
+
+
+    
 
     /***** End Logs  *******/
 

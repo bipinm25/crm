@@ -62,8 +62,8 @@ class LoginController extends Controller
 
     public function saveHistory($r, $status = 0){
         $ip = $r->ip();
-        //$ip = '49.207.201.18';
-       if($ip != '127.0.0.1'){
+        $ip = '49.207.201.18';
+        if($ip != '127.0.0.1'){
             $response = Http::retry(3, 100)->get('http://ip-api.com/json/'.$ip, [
                 'fields' => '66846719',   //all data
             ])->json();
@@ -77,6 +77,7 @@ class LoginController extends Controller
             $history = new LoginHistory();
             $history->login_ip = $ip;
             $history->username = $r->username;
+            $history->user_id = Auth::user()->id;
             $history->login_details = json_encode($response);
             $history->login_attempt_status = $status; //0-success, 1 - failed
             $history->timezone = $response['timezone'];

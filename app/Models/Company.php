@@ -16,7 +16,7 @@ class Company extends Model
 
     protected $appends = ['date_added'];
 
-    protected static $logAttributes = ['name', 'contact_person_id', 'mobile', 'email', 'status_id', 'sub_status_id', 'full_address', 'created_by', 'updated_by' ];
+    protected static $logAttributes = ['name', 'contact_person_id', 'mobile', 'email', 'status_id', 'sub_status_id', 'full_address'];
 
     public function comments(){
         return $this->hasMany(CompanyComment::class,'company_id','id');

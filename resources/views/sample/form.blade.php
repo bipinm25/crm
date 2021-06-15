@@ -740,6 +740,74 @@
 		</div>
 	</div>
 </section>
+
+
+  <!-- tabs -->
+<section id="basic-tabs-components">
+	<div class="row match-height">
+		<div class="col-xl-12 col-lg-12">
+			<div class="card">
+				<div class="card-header">
+					<h4 class="card-title">User Logs</h4>
+                    <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                    <div class="heading-elements">
+                        <ul class="list-inline mb-0">                                                     
+                            <li><a data-action="expand"><i class="ft-maximize"></i></a></li>                            
+                        </ul>
+                    </div>
+				</div>
+				<div class="card-content">
+					<div class="card-body">					
+						<ul class="nav nav-tabs">
+							<li class="nav-item">
+								<a class="nav-link active" id="base-tab1" data-toggle="tab" aria-controls="tab1" href="#tab1" aria-expanded="true">Tab 1</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" id="base-tab2" data-toggle="tab" aria-controls="tab2" href="#tab2" aria-expanded="false">Tab 2</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" id="base-tab3" data-toggle="tab" aria-controls="tab3" href="#tab3" aria-expanded="false">Tab 3</a>
+							</li>							
+						</ul>
+						<div class="tab-content px-1 pt-1">
+							<div role="tabpanel" class="tab-pane active" id="tab1" aria-expanded="true" aria-labelledby="base-tab1">
+								<p>Oat cake marzipan cake lollipop caramels wafer pie jelly beans. Icing halvah chocolate cake carrot cake. Jelly beans carrot cake marshmallow gingerbread chocolate cake. Gummies cupcake croissant.</p>
+							</div>
+							<div class="tab-pane" id="tab2" aria-labelledby="base-tab2">
+								<p>Sugar plum tootsie roll biscuit caramels. Liquorice brownie pastry cotton candy oat cake fruitcake jelly chupa chups. Pudding caramels pastry powder cake soufflé wafer caramels. Jelly-o pie cupcake.</p>
+							</div>
+							<div class="tab-pane" id="tab3" aria-labelledby="base-tab3">
+								<p>Biscuit ice cream halvah candy canes bear claw ice cream cake chocolate bar donut. Toffee cotton candy liquorice. Oat cake lemon drops gingerbread dessert caramels. Sweet dessert jujubes powder sweet sesame snaps.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+</section>  
+
+
+  <!--Log Modal -->
+  <div class="modal fade text-left" id="log_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel16">Basic Modal</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                   
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Close</button>                
+                </div>
+            </div>
+            </div>
+	</div>
+    <!-- End User Modal -->
 @endsection
 
 @section('javascript')

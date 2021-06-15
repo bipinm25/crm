@@ -53,7 +53,7 @@ class User extends Authenticatable
     ];
 
     public function getFullName(){
-        return 'this is full name';
+        return 'fff';
     }
 
     public function staff(){

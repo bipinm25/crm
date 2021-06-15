@@ -22,6 +22,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset("app-assets/vendors/css/weather-icons/climacons.min.css")}}">
     <link rel="stylesheet" type="text/css" href="{{asset("app-assets/vendors/css/extensions/sweetalert.css")}}">
     <link rel="stylesheet" type="text/css" href="{{asset("app-assets/vendors/css/extensions/toastr.css")}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/forms/selects/select2.min.css')}}">
     <!-- END VENDOR CSS-->
     <link rel="stylesheet" type="text/css" href="{{asset("app-assets/vendors/css/forms/icheck/icheck.css")}}">
     <link rel="stylesheet" type="text/css" href="{{asset("app-assets/vendors/css/forms/icheck/custom.css")}}">
@@ -161,6 +162,7 @@
     <script src="{{ asset("app-assets/vendors/js/extensions/unslider-min.js")}}"></script>
     <script src="{{ asset("app-assets/vendors/js/extensions/sweetalert.min.js")}}"></script>
     <script src="{{ asset("app-assets/vendors/js/extensions/toastr.min.js")}}"></script>
+    <script src="{{ asset('app-assets/vendors/js/forms/select/select2.full.min.js')}}"></script>
     <!-- END PAGE VENDOR JS-->
     <!-- BEGIN ROBUST JS-->
     <script src="{{ asset("app-assets/js/core/app-menu.min.js")}}"></script>

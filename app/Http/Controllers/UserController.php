@@ -202,7 +202,7 @@ class UserController extends Controller
             'name' => 'super-admin',
             'email' => 'superadmin@test.com',
             'password' => $password,
-            'username' => 'super_admin'           
+            'username' => 'super_admin'         
         ]);
         $user->assignRole('Super-admin');
     }

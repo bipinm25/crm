@@ -1,0 +1,14 @@
+TRUNCATE TABLE companies;
+TRUNCATE TABLE company_comments;
+TRUNCATE TABLE group_chats;
+TRUNCATE TABLE group_members;
+TRUNCATE TABLE groups;
+TRUNCATE TABLE login_histories;
+TRUNCATE TABLE model_has_permissions;
+TRUNCATE TABLE model_has_roles;
+TRUNCATE TABLE permissions;
+TRUNCATE TABLE role_has_permissions;
+TRUNCATE TABLE roles;
+TRUNCATE TABLE staff;
+TRUNCATE TABLE users;
+

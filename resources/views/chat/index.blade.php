@@ -58,7 +58,7 @@
     </div>
 
     <!-- Add Group Modal -->
-    <div class="modal fade text-left" id="add_group_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+    <div class="modal fade text-left" id="add_group_modal" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
         <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -77,20 +77,24 @@
 							<div class="form-body">
 								<h4 class="form-section"><i class="ft-user"></i> Group Info</h4>
 								<div class="row">
-									<div class="col-md-6">
+
+                                    <div class="col-md-12">
+										<div class="form-group">											
+                                            <select name="company_id" style="width: 428px !important;" class="form-control company">
+                                                <option>Choose Company</option>                                                
+                                            </select>								
+										</div>
+									</div>
+
+									<div class="col-md-12">
 										<div class="form-group">
 											<label for="group_name">Group Name</label>
 											<input type="text" id="group_name" class="form-control" placeholder="Group Name" name="group_name">
                                             <code class="group_name-error" style="background-color: inherit;"></code>
 										</div>
 									</div>
-									<div class="col-md-6">
-										<div class="form-group">
-											<label for="last_name">Company</label>
-											<p>select2</p>
-										</div>
-									</div>
-								</div>																						
+									
+								</div>																				
 						</form>
 					</div>
 				</div>
@@ -108,6 +112,21 @@
 
 @section('javascript')
 <script>
+    $(function(){
+        $('.company').select2({
+            ajax: {
+                url: '{{route("getcompany")}}',
+                dataType: 'json',
+                delay: 250,
+                processResults: function (data) {                    
+                    return {
+                        results: data
+                    };
+                },
+            cache: true    
+            },            
+        });
+    });
 
     function resetGroupForm(){
         $('#group_form')[0].reset();        
@@ -120,9 +139,71 @@
         });
     }
 
-$('#add_group_modal').on('hidden.bs.modal', function () {
+    $('#add_group_modal').on('hidden.bs.modal', function () {
         resetGroupForm();     
         clearGroupError();
+    });
+
+    $('#save_group').on('click',function(){
+        $('#group_form').ajaxSubmit({
+            url:'{{route("savegroup")}}',
+            method:'post',
+            dataType:'json',
+            beforeSubmit: function(arr, $form, options) {
+                //arr.push({name: "staff_type", value: "2", type: "hidden",});
+            },
+            success:function(res){         
+                clearGroupError();      
+                toastr.success("", "Saved", { positionClass: "toast-bottom-right", containerId: "toast-bottom-right" });
+                if(res.redirecturl.length > 0){
+                    window.location = res.redirecturl;
+                }
+            },
+            error: function(json){                
+                if(json.status === 422) {
+                    toastr.error("", "Error", { positionClass: "toast-bottom-right", containerId: "toast-bottom-right" });
+                    var errors = json.responseJSON;       
+                    $.each(errors.errors, function (key, value) {             
+                        $('#group_form .'+key+'-error').html(value);
+                    });
+                }
+            }          
+        });   
+    });
+
+
+var group_list;
+var list_group = function(params = {}){
+    if ($.fn.DataTable.isDataTable('.company-list')) {
+        group_list.destroy();
+    }   
+    group_list =  $(".group-list").DataTable({
+            "pageLength": 20,
+            "bLengthChange": false,
+            searching: false,
+            processing: true,
+            serverSide: true,
+            ajax: { 
+                    url: "{{ route('listgroup') }}",
+                    data: function(data){                        
+                       /*if(Object.keys(params).length > 0 ){
+                            Object.assign(data, params);
+                       }*/                 
+                    }
+                },
+            columns: [
+                {data: 'id', name: 'id'},
+                {data: 'name', name: 'name'},
+                {data: 'company','name':'company'},       
+                {data: 'created_by', name: 'created_by'},               
+                {data: 'action', name: 'action', orderable: false, searchable: false},
+            ],
+            'order': [[0, "desc" ]],
+        });   
+    }
+
+    $(document).ready(function(){
+        list_group();
     });
 
 </script>
